@@ -1,44 +1,59 @@
 import { Link } from 'react-router'
 import './ProductCard.css'
 
-export default function ProductCard() {
-    return (
-        <div className="phones-grid" id="phones-container">
-            <div className="phone-card">
-                <div className="phone-image">
-                    <img
-                        src="https://s13emagst.akamaized.net/products/60458/60457156/images/res_968c9ac33392707226842f4933552b0c.jpg?width=720&height=720&hash=E6495DD6BD702C3B660156F76D2B0FDB"
-                        alt="Phone Image"
-                    />
-                </div>
-                <div className="phone-details">
-                    <h2 className="phone-name">iPhone 15 Pro</h2>
-                    <div className="latest-comment">
-                        <p className="comment-text">
-                            "Amazing camera quality and battery life!"
-                        </p>
-                        <div className="comment-meta">
-                            <span className="comment-author">- JohnDoe</span>
-                            <span className="comment-likes">
-                                <i className="icon fas fa-thumbs-up" /> 24
-                            </span>
-                        </div>
-                    </div>
-                    <div className="no-comments">
-                        <p>No comments yet</p>
-                    </div>
+export default function ProductCard(
+  { color,
+    cpu,
+    displaySize,
+    image,
+    phoneName,
+    price,
+    ram,
+    storage,
+    _id, }
+) {
 
-                    <Link
-                        to={'/:productId/details'}
-                        color="primary"
-                        className="details-btn"
-                    >
 
-                        Details
-                    </Link>
 
-                </div>
-            </div>
+  return (
+    <div className="product-card">
+      <img
+        src={image}
+        alt="PhoneName"
+        className="product-image"
+      />
+      <div className="product-info">
+        <h3>{phoneName}</h3>
+        <div className="price-container">
+          <i className="icons fas fa-dollar-sign"> </i>
+          <span>{price}</span>
         </div>
-    )
+        <div className="specs">
+          <div className="spec-item">
+            <i className="icons fas fa-tv"></i>
+            <span>{displaySize}</span>
+          </div>
+          <div className="spec-item">
+            <i className="icons fas fa-memory"></i>
+            <span>{ram} RAM</span>
+          </div>
+          <div className="spec-item">
+            <i className="icons fas fa-sd-card"></i>
+            <span>{storage} Storage</span>
+          </div>
+          <div className="spec-item">
+            <i className="icons fas fa-microchip"></i>
+            <span>{cpu} CPU</span>
+          </div>
+        </div>
+        <Link
+          to={`/${_id}/details`}
+          color="primary"
+          className="details-btn"
+        >
+          Details
+        </Link>
+      </div>
+    </div>
+  )
 }

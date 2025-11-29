@@ -1,9 +1,8 @@
 import { NavLink, Outlet } from "react-router";
-import NoPhoneMsg from "../no-phone-msg/NoPhoneMsg";
-
 import './Products.css'
-
 export default function Products() {
+
+
     return (
         <main className="products-page">
             <div className="container">
