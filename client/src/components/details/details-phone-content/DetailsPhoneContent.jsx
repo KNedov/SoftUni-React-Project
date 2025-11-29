@@ -1,47 +1,56 @@
 import './DetailsPhoneContent.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-export default function DetailsPhoneContent() {
+export default function DetailsPhoneContent({
+    _id,
+    image,
+    displaySize,
+    color,
+    cpu,
+    ram,
+    storage,
+    price,
+    phoneName
+}) {
 
 
     return (
         <div className="phone-content">
             <div className="phone-image">
-                <img src="https://s13emagst.akamaized.net/products/60458/60457156/images/res_968c9ac33392707226842f4933552b0c.jpg?width=720&height=720&hash=E6495DD6BD702C3B660156F76D2B0FDB" alt="PhoneImage" />
+                <img src={image} alt={phoneName} />
             </div>
 
             <div className="phone-specs">
                 <div className="spec-item">
                     <i className="icons fas fa-tv"></i>
                     <span className="spec-value">
-                        <strong>Display:</strong> 6.8
+                        <strong>Display:</strong> {displaySize}
                     </span>
                 </div>
 
                 <div className="spec-item">
                     <i className="icons fas fa-palette"></i>
-                    <span className="spec-value"><strong>Color:</strong> Red</span>
+                    <span className="spec-value"><strong>Color:</strong> {color}</span>
                 </div>
 
                 <div className="spec-item">
                     <i className="icons fas fa-microchip"></i>
-                    <span className="spec-value"><strong>CPU:</strong> SnapDragon</span>
+                    <span className="spec-value"><strong>CPU:</strong> {cpu}</span>
                 </div>
 
                 <div className="spec-item">
                     <i className="icons fas fa-memory"></i>
-                    <span className="spec-value"><strong>RAM:</strong> 4GB</span>
+                    <span className="spec-value"><strong>RAM:</strong> {ram}GB</span>
                 </div>
 
                 <div className="spec-item">
                     <i className="icons fas fa-sd-card"></i>
                     <span className="spec-value">
-                        <strong>Storage:</strong> 128GB
+                        <strong>Storage:</strong> {storage} GB
                     </span>
                 </div>
 
                 <div className="spec-item price">
                     <i className="icons fas fa-dollar-sign"></i>
-                    <span className="spec-value">129$</span>
+                    <span className="spec-value">{price} $</span>
                 </div>
 
                 <div>

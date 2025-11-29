@@ -1,6 +1,10 @@
 import './DetailsCommentsSection.css'
 
-export default function DetailsCommentsSection() {
+export default function DetailsCommentsSection(
+    { comments }
+) {
+ 
+
 
     return (
         <div className="comments-section">
@@ -19,7 +23,7 @@ export default function DetailsCommentsSection() {
 
             <div className="new-comment" >
                 <textarea
-            
+
                     required
                     className="comment-field"
                     placeholder="Write your thoughts about this phone..."
@@ -42,44 +46,49 @@ export default function DetailsCommentsSection() {
 
             <div className="comments-list">
 
-                <div className="comment-card">
-                    <div className="comment-header">
-                        <div className="user-info">
-                            <i className="icons fas fa-user-circle"></i>
-                            <span className="username">Username</span>
-                            <span className="comment-date">Comment create at </span>
-                        </div>
-
-                        <div className="comment-actions">
-                            <button
-
-                                className="like-btn"
-
-                            >
-                                <div className="like-container">
-                                    <i className="icons fas fa-thumbs-up"></i>
-
-                                    <span className="like-count">3</span>
+                {comments?.length>0
+                    ? comments.map(comment =>
+                       (<div key={comment._id}  className="comment-card">
+                            <div className="comment-header">
+                                <div className="user-info">
+                                    <i className="icons fas fa-user-circle"></i>
+                                    <span className="username">{comment.userId.username}</span>
+                                    <span className="comment-date">{comment.create_at} </span>
                                 </div>
-                            </button>
-                            <button
 
-                                className="delete-btn delete"
+                                <div className="comment-actions">
+                                    <button
 
-                            >
-                                <i className="icons fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+                                        className="like-btn"
 
+                                    >
+                                        <div className="like-container">
+                                            <i className="icons fas fa-thumbs-up"></i>
+
+                                            <span className="like-count">{comment.likes?.length}</span>
+                                        </div>
+                                    </button>
+                                    <button
+
+                                        className="delete-btn delete"
+
+                                    >
+                                        <i className="icons fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div className="comment-content">
+                                {comment.text}
+                            </div>
+                        </div>)
+                    )
+                    : <div className="comment-card">
+                        <p>No comments yet</p>
                     </div>
-                    <div className="comment-content">
-                        Comment Text
-                    </div>
-                </div>
+                }
 
-                <div className="comment-card">
-                    <p>No comments yet</p>
-                </div>
+
 
             </div>
         </div>

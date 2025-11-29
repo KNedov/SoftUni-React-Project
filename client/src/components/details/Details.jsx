@@ -1,9 +1,18 @@
+import { Link, useNavigate, useParams } from 'react-router';
+import { useUserContext } from '../../contexts/UserContext';
+import useRequest from '../../hooks/userRequest';
 import './Details.css'
 
 import DetailsCommentsSection from "./details-comments-section/DetailsCommentsSection";
 import DetailsPhoneContent from './details-phone-content/DetailsPhoneContent';
 
 export default function Details() {
+    const { user, isAuthenticated } = useUserContext();
+    const navigate = useNavigate()
+    const {productId}=useParams()
+       const { data: phone } = useRequest(`/phones/${productId}`, [])
+   
+       
 
     return (
 
@@ -12,11 +21,11 @@ export default function Details() {
 
                 <div className="phone-card">
                     <div className="phone-header">
-                        <a className="back-btn" >
+                        <Link className="back-btn" >
                             <i className="fas fa-arrow-left"></i>
                             Back
-                        </a>
-                        <h1 className="phone-title">Iphone</h1>
+                        </Link>
+                        <h1 className="phone-title">{phone.phoneName}</h1>
 
                         <div className="actions">
                             <button
@@ -36,9 +45,9 @@ export default function Details() {
                     </div>
 
 
-                    <DetailsPhoneContent />
+                    <DetailsPhoneContent {...phone}/>
                 </div>
-                <DetailsCommentsSection />
+                <DetailsCommentsSection comments={phone.comments}/>
             </div>
 
 
