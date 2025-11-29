@@ -11,6 +11,7 @@ import CreateProduct from './components/create-product/CreateProduct'
 import MyProducts from './components/my-products/MyProducts'
 import Login from './components/login/Login'
 import Register from './components/register/Register'
+import Details from './components/details/Details'
 function App() {
     return (
         <>
@@ -27,6 +28,7 @@ function App() {
 
                  <Route path="/product/create" element={<CreateProduct />} />
                  <Route path="/my-products" element={<MyProducts />} />
+                 <Route path="/:productId/details" element={<Details />} />
             </Routes>
             <Footer />
         </>
