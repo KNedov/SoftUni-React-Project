@@ -1,0 +1,48 @@
+.site-footer {
+    background-color: var(--dark-color);
+    color: var(--white);
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+.footer-content {
+    text-align: center;
+    padding: 15px 0;
+}
+
+.footer-content p {
+    margin: 0;
+    color: var(--light-color);
+    font-size: 0.9rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .phones-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-actions  {
+        justify-content: center;
+    }
+
+    .auth-section {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-btn {
+        margin: 5px;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
