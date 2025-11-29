@@ -7,6 +7,7 @@ import Home from './components/home/Home'
 import Products from './components/products/Products'
 import Smartphones from './components/products/smartphones/smartphones'
 import Tablets from './components/products/tablets/Tablets'
+import CreateProduct from './components/create-product/CreateProduct'
 function App() {
     return (
         <>
@@ -18,6 +19,7 @@ function App() {
                     <Route path="smartphones" element={<Smartphones />} />
                     <Route path="tablets" element={<Tablets />} />
                 </Route>
+                 <Route path="/product/create" element={<CreateProduct />} />
             </Routes>
             <Footer />
         </>
