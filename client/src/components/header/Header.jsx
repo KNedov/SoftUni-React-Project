@@ -46,7 +46,7 @@ export default function Header() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/catalog/smartphones" className={({ isActive }) => ` ${isActive ? 'active' : ''}`} >
+                            <NavLink to="/products/smartphones" className={({ isActive }) => ` ${isActive ? 'active' : ''}`} >
                                 <i className="fas fa-mobile-alt" />
                                 Products
                             </NavLink>
