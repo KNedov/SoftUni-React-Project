@@ -22,8 +22,8 @@ export function UserProvider({
     const [user, setUser] = useState(null);
     const { request } = useRequest();
 
-    const registerHandler = async (email, password) => {
-        const newUser = { email, password }
+    const registerHandler = async (email,password,username,tel) => {
+        const newUser = {email,password,username,tel}
 
         const result = await request('/register', 'POST', newUser);
 
