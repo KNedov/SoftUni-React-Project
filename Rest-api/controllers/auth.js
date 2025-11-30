@@ -104,9 +104,21 @@ function logout(req, res) {
     tokenBlacklistModel
         .create({ token })
         .then(() => {
-            res.clearCookie(authCookieName)
-                .status(204)
-                .send({ message: "Logged out!" });
+            if (process.env.NODE_ENV === "production") {
+                res.clearCookie(authCookieName, {
+                    httpOnly: true,
+                    sameSite: "none",
+                    secure: true,
+                    path: "/",
+                });
+            } else {
+                res.clearCookie(authCookieName, {
+                    httpOnly: true,
+                    path: "/",
+                });
+            }
+
+            res.status(204).send();
         })
         .catch((err) => res.send(err));
 }
