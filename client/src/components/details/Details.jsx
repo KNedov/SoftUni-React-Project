@@ -9,10 +9,10 @@ import DetailsPhoneContent from './details-phone-content/DetailsPhoneContent';
 export default function Details() {
     const { user, isAuthenticated } = useUserContext();
     const navigate = useNavigate()
-    const {productId}=useParams()
-       const { data: phone } = useRequest(`/phones/${productId}`, [])
-   
-       
+    const { productId } = useParams()
+    const { data: phone } = useRequest(`/phones/${productId}`, [])
+
+
 
     return (
 
@@ -27,27 +27,29 @@ export default function Details() {
                         </Link>
                         <h1 className="phone-title">{phone.phoneName}</h1>
 
-                        <div className="actions">
-                            <button
+                        {isAuthenticated &&
+                            <div className="actions">
+                                <button
 
-                                className="action-btn"
-                            >
-                                <i className="fas fa-pencil-alt"></i>
-                            </button>
-                            <button
+                                    className="action-btn"
+                                >
+                                    <i className="fas fa-pencil-alt"></i>
+                                </button>
+                                <button
 
-                                className="action-btn delete"
-                            >
-                                <i className="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+                                    className="action-btn delete"
+                                >
+                                    <i className="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        }
 
                     </div>
 
 
-                    <DetailsPhoneContent {...phone}/>
+                    <DetailsPhoneContent {...phone} isAuthenticated={isAuthenticated} />
                 </div>
-                <DetailsCommentsSection comments={phone.comments}/>
+                <DetailsCommentsSection comments={phone.comments} isAuthenticated={isAuthenticated} />
             </div>
 
 

@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router';
 import './Header.css'
-import {useUserContext} from '../../contexts/UserContext'
+import { useUserContext } from '../../contexts/UserContext'
 export default function Header() {
 
     const { isAuthenticated } = useUserContext()
@@ -57,18 +57,22 @@ export default function Header() {
                                 Products
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="product/create" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
-                                <i className="fas fa-plus-circle" />
-                                CreateProduct
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/my-products" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
-                                <i className="fas fa-list" />
-                                MyProducts
-                            </NavLink>
-                        </li>
+                        {isAuthenticated &&
+                            <>
+                                <li>
+                                    <NavLink to="product/create" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
+                                        <i className="fas fa-plus-circle" />
+                                        CreateProduct
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/my-products" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
+                                        <i className="fas fa-list" />
+                                        MyProducts
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
                     </ul>
                 </div>
             </nav>
