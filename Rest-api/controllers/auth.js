@@ -101,14 +101,6 @@ function login(req, res, next) {
 function logout(req, res) {
     const token = req.cookies[authCookieName];
 
-    
-    if (!token) {
-        return res.clearCookie(authCookieName)
-                  .status(204)
-                  .send({ message: "Logged out!" });
-    }
-
-   
     tokenBlacklistModel
         .create({ token })
         .then(() => {
@@ -116,13 +108,7 @@ function logout(req, res) {
                 .status(204)
                 .send({ message: "Logged out!" });
         })
-        .catch((err) => {
-       
-            console.error('Blacklist error:', err);
-            res.clearCookie(authCookieName)
-                .status(204)
-                .send({ message: "Logged out!" });
-        });
+        .catch((err) => res.send(err));
 }
 
 function checkAuth(req, res) {
