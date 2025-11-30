@@ -10,7 +10,7 @@ const  checkAuthMid  = require('../utils/authCheck');
 
 router.post('/register', authController.register);
 router.post('/login', authController.login);
-router.post('/logout', authController.logout);
+router.get('/logout', authController.logout);
 router.get('/auth/check',checkAuthMid(false), authController.checkAuth);
 
 router.use('/users', users);
