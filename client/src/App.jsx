@@ -12,6 +12,7 @@ import MyProducts from './components/my-products/MyProducts'
 import Login from './components/login/Login'
 import Register from './components/register/Register'
 import Details from './components/details/Details'
+import Logout from './components/logout/Logout'
 function App() {
     return (
         <>
@@ -23,12 +24,13 @@ function App() {
                     <Route path="smartphones" element={<Smartphones />} />
                     <Route path="tablets" element={<Tablets />} />
                 </Route>
-                 <Route path="/login" element={<Login />} />
-                 <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-                 <Route path="/product/create" element={<CreateProduct />} />
-                 <Route path="/my-products" element={<MyProducts />} />
-                 <Route path="/:productId/details" element={<Details />} />
+                <Route path="/product/create" element={<CreateProduct />} />
+                <Route path="/my-products" element={<MyProducts />} />
+                <Route path="/:productId/details" element={<Details />} />
+                <Route path="/logout" element={<Logout />} />
             </Routes>
             <Footer />
         </>

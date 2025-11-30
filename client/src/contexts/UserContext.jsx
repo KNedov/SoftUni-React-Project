@@ -38,7 +38,7 @@ export function UserProvider({
     }
 
     const logoutHandler = () => {
-        return request('/logout', 'GET', null, { accessToken: user.accessToken })
+        return request('/logout', 'POST', null)
             .finally(() => setUser(null));
     };
 
