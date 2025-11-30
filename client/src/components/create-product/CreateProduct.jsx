@@ -1,18 +1,48 @@
+import { useNavigate } from 'react-router'
+import useRequest from '../../hooks/userRequest'
 import './CreateProduct.css'
+import useForm from '../../hooks/useForm'
 
 export default function CreateProduct() {
+  const {request} = useRequest()
+  const navigate =useNavigate()
+
+  const createProductHandler = async(values)=>{
+    const data=values;
+    try{
+      await request ('/phones/create','POST',data);
+      navigate('/')
+
+    }catch(err){
+      alert(err.message)
+    }
+  }
+  const{
+    register,
+    formAction,
+  } = useForm(createProductHandler,{
+    phoneName:'',
+    displaySize:'',
+    color:'',
+    cpu:'',
+    ram:'',
+    storage:'',
+    price:'',
+    image:'',
+
+  })
     
     return(
         <div className="create-phone-container">
   <h1 className="create-title">Add New Phone</h1>
   
-  <form className="phone-form">
+  <form className="phone-form" action={formAction} >
     <div className="form-group">
       <label htmlFor="phoneName">Phone Name</label>
       <input 
         type="text" 
         id="phoneName" 
-        name="phoneName" 
+        {...register('phoneName')} 
         placeholder="e.g. iPhone 15 Pro" 
       />
     </div>
@@ -23,8 +53,8 @@ export default function CreateProduct() {
         <input 
           type="text" 
           id="displaySize" 
-          name="displaySize" 
-          placeholder="e.g. 6.7 inches" 
+          {...register('displaySize')}  
+          placeholder="e.g. 6.7 " 
         />
       </div>
       
@@ -33,7 +63,7 @@ export default function CreateProduct() {
         <input 
           type="text" 
           id="color" 
-          name="color" 
+          {...register('color')}  
           placeholder="e.g. Space Black" 
         />
       </div>
@@ -45,7 +75,7 @@ export default function CreateProduct() {
         <input 
           type="text" 
           id="cpu" 
-          name="cpu" 
+          {...register('cpu')} 
           placeholder="e.g. A17 Pro" 
         />
       </div>
@@ -55,7 +85,7 @@ export default function CreateProduct() {
         <input 
           type="text" 
           id="ram" 
-          name="ram" 
+          {...register('ram')} 
           placeholder="e.g. 8GB" 
         />
       </div>
@@ -67,7 +97,7 @@ export default function CreateProduct() {
         <input 
           type="text" 
           id="storage" 
-          name="storage" 
+          {...register('storage')} 
           placeholder="e.g. 256GB" 
         />
       </div>
@@ -77,7 +107,7 @@ export default function CreateProduct() {
         <input 
           type="number" 
           id="price" 
-          name="price" 
+          {...register('price')} 
           placeholder="e.g. 999" 
         />
       </div>
@@ -88,7 +118,7 @@ export default function CreateProduct() {
       <input 
         type="url" 
         id="imageUrl" 
-        name="imageUrl" 
+        {...register('image')} 
         placeholder="https://example.com/image.jpg" 
       />
       <small>Must be a valid image URL (jpg, png, gif, webp)</small>

@@ -37,11 +37,11 @@ export default function ProductCard(
           </div>
           <div className="spec-item">
             <i className="icons fas fa-memory"></i>
-            <span>{ram} RAM</span>
+            <span>{ram} GB RAM</span>
           </div>
           <div className="spec-item">
             <i className="icons fas fa-sd-card"></i>
-            <span>{storage} Storage</span>
+            <span>{storage} GB Storage</span>
           </div>
           <div className="spec-item">
             <i className="icons fas fa-microchip"></i>

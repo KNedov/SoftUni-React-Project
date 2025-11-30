@@ -8,7 +8,8 @@ export default function DetailsPhoneContent({
     ram,
     storage,
     price,
-    phoneName
+    phoneName,
+    isAuthenticated
 }) {
 
 
@@ -38,7 +39,7 @@ export default function DetailsPhoneContent({
 
                 <div className="spec-item">
                     <i className="icons fas fa-memory"></i>
-                    <span className="spec-value"><strong>RAM:</strong> {ram}GB</span>
+                    <span className="spec-value"><strong>RAM:</strong> {ram} GB</span>
                 </div>
 
                 <div className="spec-item">
@@ -53,12 +54,14 @@ export default function DetailsPhoneContent({
                     <span className="spec-value">{price} $</span>
                 </div>
 
-                <div>
-                    <button className="btn btn-buy disabled-buy">
-                        Buy
-                        <span className="coming-soon">Coming Soon</span>
-                    </button>
-                </div>
+                {isAuthenticated
+                    && <div>
+                        <button className="btn btn-buy disabled-buy">
+                            Buy
+                            <span className="coming-soon">Coming Soon</span>
+                        </button>
+                    </div>
+                }
             </div>
         </div>
     )
