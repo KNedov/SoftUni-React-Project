@@ -25,25 +25,25 @@ export function UserProvider({
     const registerHandler = async (email, password) => {
         const newUser = { email, password }
 
-        const result = await request('/user/register', 'POST', newUser);
+        const result = await request('/register', 'POST', newUser);
 
         setUser(result);
 
     }
 
     const loginHandler = async (email, password) => {
-        const result = await request('/user/login', 'POST', { email, password });
+        const result = await request('/login', 'POST', { email, password });
 
         setUser(result)
     }
 
     const logoutHandler = () => {
-        return request('/users/logout', 'GET', null, { accessToken: user.accessToken })
+        return request('/logout', 'GET', null, { accessToken: user.accessToken })
             .finally(() => setUser(null));
     };
 
     const userContextValues = {
-        user, isAuthenticated: !!user?.accessToken,
+        user, isAuthenticated: !!user?._id,
         registerHandler,
         loginHandler,
         logoutHandler,

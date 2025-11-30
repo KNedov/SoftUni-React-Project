@@ -1,15 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../contexts/UserContext";
+import { useEffect, useState } from "react";
 
-const baseUrl =  'https://softuni-react-project-336p.onrender.com/api'; // ← За production
+const baseUrl = 'https://softuni-react-project-336p.onrender.com/api';
 
 export default function useRequest(url, initialState) {
-    const { user, isAuthenticated } = useContext(UserContext);
     const [data, setData] = useState(initialState);
-
-    // TODO Fix infinite loop problem on mount request with useEffect
+    
     const request = async (url, method, data, config = {}) => {
-        let options = {};
+        let options = {
+            credentials: 'include', 
+        };
 
         if (method) {
             options.method = method;
@@ -17,32 +16,28 @@ export default function useRequest(url, initialState) {
 
         if (data) {
             options.headers = {
-                'content-type': 'application/json',
+                'Content-Type': 'application/json',
             };
-
             options.body = JSON.stringify(data);
         }
 
-        if (config.accessToken || isAuthenticated) {
-            options.headers = {
-                ...options.headers,
-                'X-Authorization': config.accessToken || user.accessToken,
+        try {
+            const response = await fetch(`${baseUrl}${url}`, options);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            if (response.status === 204) {
+                return {};
+            }
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Request failed:', error);
+            throw error;
         }
-
-        const response = await fetch(`${baseUrl}${url}`, options);
-
-        if (!response.ok) {
-            throw response.statusText;
-        }
-
-        if (response.status === 204) {
-            return {};
-        }
-
-        const result = await response.json();
-
-        return result;
     };
 
     useEffect(() => {
@@ -50,12 +45,12 @@ export default function useRequest(url, initialState) {
 
         request(url)
             .then(result => setData(result))
-            .catch(err => alert(err));
+            .catch(err => console.error(err));
     }, [url]);
 
     return {
         request,
         data,
         setData,
-    }
+    };
 }
