@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 
-const baseUrl = import.meta.env.DEV 
-    ? '/api'  // ← За разработка - използва proxy
-    : 'https://rest-api-phone-zone.onrender.com/api'; // ← За production
+const baseUrl =  'https://softuni-react-project-336p.onrender.com/api'; // ← За production
 
 export default function useRequest(url, initialState) {
     const { user, isAuthenticated } = useContext(UserContext);
