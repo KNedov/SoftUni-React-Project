@@ -7,7 +7,7 @@ export default defineConfig({
     server: {
         proxy: {
             "/api": {
-                target: "https://rest-api-phone-zone.onrender.com",
+                target: "https://softuni-react-project-336p.onrender.com",
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/api/, "/api"),
