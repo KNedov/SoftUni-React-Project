@@ -1,4 +1,4 @@
-import { data } from 'react-router'
+import { data } from 'react-router-dom'
 import useRequest from '../../hooks/userRequest'
 import NoPhoneMsg from '../no-phone-msg/NoPhoneMsg'
 import ProductCard from '../product-card/ProductCard'

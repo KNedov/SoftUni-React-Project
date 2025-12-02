@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router-dom';
 import './Header.css'
 import { useUserContext } from '../../contexts/UserContext'
 export default function Header() {
