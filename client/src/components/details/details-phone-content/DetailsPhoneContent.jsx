@@ -9,7 +9,8 @@ export default function DetailsPhoneContent({
     storage,
     price,
     phoneName,
-    isAuthenticated
+    isAuthenticated,
+    isOwner
 }) {
 
 
@@ -54,7 +55,7 @@ export default function DetailsPhoneContent({
                     <span className="spec-value">{price} $</span>
                 </div>
 
-                {isAuthenticated
+                {isAuthenticated &&!isOwner
                     && <div>
                         <button className="btn btn-buy disabled-buy">
                             Buy

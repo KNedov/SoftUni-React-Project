@@ -1,5 +1,5 @@
 
-import { Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Footer from './components/footer/Footer'
 import Header from './components/header/Header'
@@ -13,9 +13,13 @@ import Login from './components/login/Login'
 import Register from './components/register/Register'
 import Details from './components/details/Details'
 import Logout from './components/logout/Logout'
+import { UserProvider } from './contexts/UserContext'
+import Edit from './components/edit/Edit'
+import Delete from './components/delete/Delete'
+
 function App() {
     return (
-        <>
+        <UserProvider>
             <Header />
             <Routes>
                 <Route path='/' element={<Home />} />
@@ -30,10 +34,11 @@ function App() {
                 <Route path="/product/create" element={<CreateProduct />} />
                 <Route path="/my-products" element={<MyProducts />} />
                 <Route path="/:productId/details" element={<Details />} />
+                <Route path="/:productId/edit" element={<Edit />} />
                 <Route path="/logout" element={<Logout />} />
             </Routes>
             <Footer />
-        </>
+        </UserProvider>
     )
 }
 
