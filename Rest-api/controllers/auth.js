@@ -89,6 +89,7 @@ function login(req, res, next) {
                     httpOnly: true,
                     sameSite: "none",
                     secure: true,
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
                 });
             } else {
                 res.cookie(authCookieName, token, { httpOnly: true });
