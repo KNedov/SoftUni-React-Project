@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 
-const baseUrl = 'https://softuni-react-project-336p.onrender.com/api';
+const baseUrl = "https://softuni-react-project-336p.onrender.com/api";
 
 export default function useRequest(url, initialState) {
     const [data, setData] = useState(initialState);
-    
     const request = async (url, method, data, config = {}) => {
         let options = {
-            credentials: 'include', 
+            credentials: "include",
         };
 
         if (method) {
@@ -16,7 +15,7 @@ export default function useRequest(url, initialState) {
 
         if (data) {
             options.headers = {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             };
             options.body = JSON.stringify(data);
         }
@@ -25,7 +24,8 @@ export default function useRequest(url, initialState) {
             const response = await fetch(`${baseUrl}${url}`, options);
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorResult = await response.json();
+                throw new Error(errorResult.message || "Server error");
             }
 
             if (response.status === 204) {
@@ -35,7 +35,7 @@ export default function useRequest(url, initialState) {
             const result = await response.json();
             return result;
         } catch (error) {
-            console.error('Request failed:', error);
+            console.error("Request failed:", error);
             throw error;
         }
     };
@@ -44,8 +44,8 @@ export default function useRequest(url, initialState) {
         if (!url) return;
 
         request(url)
-            .then(result => setData(result))
-            .catch(err => console.error(err));
+            .then((result) => setData(result))
+            .catch((err) => console.error(err));
     }, [url]);
 
     return {

@@ -26,7 +26,7 @@ export default function Login() {
 
     const{
         register,
-        formAction,
+        loginFormAction,
 
     }=useForm(submitHandler,{
         email:'',
@@ -38,7 +38,7 @@ export default function Login() {
             <div className="login-card">
                 <h1 className="login-title">Sign In</h1>
 
-                <form className="login-form" action={formAction}>
+                <form className="login-form" action={loginFormAction}>
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
                         <input type="email" id="email" {...register('email')} required placeholder="Enter your email" />

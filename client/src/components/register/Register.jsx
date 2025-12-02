@@ -1,44 +1,47 @@
 import { Link, useNavigate } from 'react-router'
 import './Register.css'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import UserContext from '../../contexts/UserContext'
 import useForm from '../../hooks/useForm'
 
 export default function Register() {
     const navigate = useNavigate()
-    const {registerHandler} = useContext(UserContext)
+    const { registerHandler } = useContext(UserContext)
+ 
 
-    const registerSubmitHandler = async(values)=>{
-        const {email,username,password,rePassword,tel}=values;
-
-        if(!email|| !password){
-            return alert('Please fill all the fields')
-
-        }
-
-        if(password !==rePassword){
-            return alert('Password does not match')
+    const registerSubmitHandler = async (values) => {
+        const { email, username, password, rePassword, tel } = values;
+      
+        if (Object.keys(errors).length > 0) {
+            return
         }
         try {
-            await registerHandler(email,password,username,tel)
+            await registerHandler(email, password, username, tel)
 
             navigate('/')
         } catch (err) {
-            
-            alert(err.message);
+
+            alert(err);
         }
     }
+    const inputClass = (field) => {
+    const hasError = errors[field] && touched[field];
+    return `input ${hasError ? 'input-error' : ''}`;
+};
 
-    const {
-        register,
-        formAction,
-    } = useForm(registerSubmitHandler,{
-        email:'',
-        username:'',
-        password:'',
-        tel:'',
-        rePassword:''
+const errorText = (field) =>
+    errors[field] && touched[field] && (
+        <p className="error-text">{errors[field]}</p>
+    );
+    const { register, formAction, errors, touched } = useForm(registerSubmitHandler, {
+        email: '',
+        username: '',
+        password: '',
+        tel: '',
+        rePassword: ''
     })
+
+
 
     return (
         <div className='reg-wrapper'>
@@ -47,27 +50,32 @@ export default function Register() {
                 <form className="registration-form" action={formAction}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" {...register('email')} required placeholder="Enter your email" />
+                        <input type="email" id="email" name="email" {...register('email')} className={inputClass('email')} required placeholder="Enter your email" />
+                        {errorText('email')}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" id="username" {...register('username')}  required placeholder="Choose a username" />
+                        <input type="text" id="username" {...register('username')} className={inputClass('username')} required placeholder="Choose a username" />
+                        {errorText('username')}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="tel">Telephone</label>
-                        <input type="tel" id="tel" {...register('tel')}  placeholder="Enter your phone number" />
+                        <input type="tel" id="tel" {...register('tel')} className={inputClass('tel')} placeholder="Enter your phone number" />
+                       {errorText('tel')}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" {...register('password')}  required placeholder="Create password" />
+                        <input type="password" id="password" {...register('password')} className={inputClass('password')} required placeholder="Create password" />
+                       {errorText('password')}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="repassword">Repeat Password</label>
-                        <input type="password" id="repassword" {...register('rePassword')}  required placeholder="Repeat your password" />
+                        <input type="password" id="repassword" {...register('rePassword')} className={inputClass('rePassword')} required placeholder="Repeat your password" />
+                        {errorText('rePassword')}
                     </div>
 
                     <button type="submit" className="register-btn">Register</button>

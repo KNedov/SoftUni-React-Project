@@ -82,6 +82,22 @@
     text-decoration: underline;
 }
 
+.input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
+}
+
+.input-error {
+    border-color: #dc2626;
+   
+}
+
+.error-text {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
 @media (max-width: 480px) {
     .registration-container {
         padding: 1.5rem;
