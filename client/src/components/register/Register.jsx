@@ -3,27 +3,37 @@ import './Register.css'
 import { useContext, useState } from 'react'
 import UserContext from '../../contexts/UserContext'
 import useForm from '../../hooks/useForm'
+import { validateRegister } from '../../validators/validateRegister'
 
 export default function Register() {
     const navigate = useNavigate()
     const { registerHandler } = useContext(UserContext)
+    const[errMsg,setErrMsg]=useState()
+    const [pending,setPending]=useState(false)
  
 
-    const registerSubmitHandler = async (values) => {
-        const { email, username, password, rePassword, tel } = values;
-      
-        if (Object.keys(errors).length > 0) {
-            return
-        }
-        try {
-            await registerHandler(email, password, username, tel)
-
-            navigate('/')
-        } catch (err) {
-
-            alert(err);
-        }
+    const submit = async (values) => {
+    if (Object.keys(errors).length > 0) {
+        return;
     }
+
+    try {
+        setPending(true);
+
+        await registerHandler(
+            values.email,
+            values.password,
+            values.username,
+            values.tel
+        );
+
+        navigate('/');
+    } catch (err) {
+        setErrMsg(err.message);
+    } finally {
+        setPending(false); 
+    }
+};
     const inputClass = (field) => {
     const hasError = errors[field] && touched[field];
     return `input ${hasError ? 'input-error' : ''}`;
@@ -33,13 +43,22 @@ const errorText = (field) =>
     errors[field] && touched[field] && (
         <p className="error-text">{errors[field]}</p>
     );
-    const { register, formAction, errors, touched } = useForm(registerSubmitHandler, {
+    const {  
+        values,
+        errors,
+        touched,
+        register,
+        submitHandler } = useForm(
+        {
         email: '',
         username: '',
         password: '',
         tel: '',
         rePassword: ''
-    })
+        },
+        validateRegister,
+        submit
+    )
 
 
 
@@ -47,7 +66,7 @@ const errorText = (field) =>
         <div className='reg-wrapper'>
             <div className="registration-container">
                 <h1>Create Account</h1>
-                <form className="registration-form" action={formAction}>
+                <form className="registration-form" onSubmit={submitHandler}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" {...register('email')} className={inputClass('email')} required placeholder="Enter your email" />
@@ -77,8 +96,8 @@ const errorText = (field) =>
                         <input type="password" id="repassword" {...register('rePassword')} className={inputClass('rePassword')} required placeholder="Repeat your password" />
                         {errorText('rePassword')}
                     </div>
-
-                    <button type="submit" className="register-btn">Register</button>
+                    <button type="submit" disabled={pending} className="register-btn">{pending ? "Loading..." : "Register"}</button>
+                    {errMsg&&<p className='error-text'>{errMsg}</p>}
                 </form>
 
                 <div className="login-link">

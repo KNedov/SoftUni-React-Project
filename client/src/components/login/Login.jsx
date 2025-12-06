@@ -2,54 +2,74 @@ import './Login.css'
 
 import { Link, useNavigate } from "react-router";
 import useForm from "../../hooks/useForm";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../../contexts/UserContext";
+import { validateLogin } from '../../validators/validateLogin';
 
 export default function Login() {
-    const { loginHandler } = useContext(UserContext);
+        const { loginHandler } = useContext(UserContext);
     const navigate = useNavigate();
+    const [errMsg, setErrMsg] = useState("")
+    const [pending, setPending] = useState(false)
 
-    const submitHandler = async ({ email, password }) => {
-        if (!email || !password) {
-            return alert(`Email and Password are required`)
-        }
-
+    const submit = async ({ email, password }) => {
         try {
-            await loginHandler(email, password)
-
-            navigate('/')
-
+            setPending(true);
+            await loginHandler(email, password);
+            setPending(false);
+            navigate("/");
         } catch (err) {
-            alert(err.message)
+            setPending(false);
+            setErrMsg(err.message);
         }
     }
 
-    const{
-        register,
-        loginFormAction,
+    const inputClass = (field) => {
+        const hasError = errors[field] && touched[field];
+        return `input ${hasError ? 'input-error' : ''}`;
+    };
 
-    }=useForm(submitHandler,{
-        email:'',
-        password:''
-    })
+    const errorText = (field) =>
+        errors[field] && touched[field] && (
+            <p className="error-text">{errors[field]}</p>
+        );
+
+    const {
+        values,
+        errors,
+        touched,
+        register,
+        submitHandler
+    } = useForm(
+        { email: "", password: "" },
+        validateLogin,
+        submit            
+    );
 
     return (
         <div className="login-container">
             <div className="login-card">
                 <h1 className="login-title">Sign In</h1>
 
-                <form className="login-form" action={loginFormAction}>
+                <form className="login-form" onSubmit={submitHandler}>
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
-                        <input type="email" id="email" {...register('email')} required placeholder="Enter your email" />
+                        <input type="email" id="email" {...register('email')} className={inputClass('email')} required placeholder="Enter your email" />
+                        {errorText('email')}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" {...register('password')} required placeholder="Enter your password" />
+                        <input type="password" id="password" {...register('password')} className={inputClass('password')} required placeholder="Enter your password" />
+                        {errorText('password')}
                     </div>
+                   
+                    <button type="submit" disabled={pending}  className="login-btn">{pending ? "Loading..." : "Login"}</button>
+                    
+                    
+                    
+                    {errMsg && <p className='error-text'>{errMsg}</p>}
 
-                    <button type="submit" className="login-btn">Login</button>
                 </form>
 
                 <div className="login-footer">

@@ -65,6 +65,11 @@
     background-color: #2980b9;
 }
 
+.login-btn:disabled {
+    background-color: #95a5a6;
+    
+}
+
 
 .login-link {
     text-align: center;
