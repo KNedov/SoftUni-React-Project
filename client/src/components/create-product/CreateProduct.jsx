@@ -1,7 +1,7 @@
 import './CreateProduct.css'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import useRequest from '../../hooks/userRequest'
+import useRequest from '../../hooks/useRequest'
 
 
 export default function CreateProduct() {

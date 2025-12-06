@@ -1,7 +1,7 @@
 import './Edit.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import useRequest from '../../hooks/userRequest'
+import useRequest from '../../hooks/useRequest'
 import { useEffect } from 'react';
 
 export default function Edit() {

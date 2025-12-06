@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useRequest from "../../hooks/userRequest";
+import useRequest from "../../hooks/useRequest";
 import { useState, useEffect } from "react";
 import './Delete.css';
 

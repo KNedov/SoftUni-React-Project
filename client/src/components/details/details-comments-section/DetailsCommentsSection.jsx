@@ -1,5 +1,5 @@
 import { useEffect, startTransition, useTransition } from 'react'
-import useRequest from '../../../hooks/userRequest'
+import useRequest from '../../../hooks/useRequest'
 import { useUserContext } from '../../../contexts/UserContext'
 import { useParams } from "react-router-dom";
 import './DetailsCommentsSection.css'

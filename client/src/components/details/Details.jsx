@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useUserContext } from '../../contexts/UserContext';
-import useRequest from '../../hooks/userRequest';
+import useRequest from '../../hooks/useRequest';
 import './Details.css'
 import { useNavigate } from "react-router-dom";
 
