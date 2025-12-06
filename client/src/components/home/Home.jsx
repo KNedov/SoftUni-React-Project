@@ -1,15 +1,14 @@
-import { data } from 'react-router-dom'
-import useRequest from '../../hooks/userRequest'
-import NoPhoneMsg from '../no-phone-msg/NoPhoneMsg'
-import ProductCard from '../product-card/ProductCard'
-import './Home.css'
-import HomeProductCard from './home-product-card/HomeProductCard'
-
+// Home.js
+import useRequest from '../../hooks/useRequest';
+import NoPhoneMsg from '../no-phone-msg/NoPhoneMsg';
+import './Home.css';
+import HomeProductCard from './home-product-card/HomeProductCard';
+import Loading from '../loading/Loading';
+import ErrorDisplay from '../error-display/ErrorDisplay';
 
 export default function Home() {
-
-  const { data: latestPhones } = useRequest('/phones?limit=3', [])
- 
+  const { data: latestPhones, loading, error } = useRequest('/phones?limit=3', []);
+  
 
 
   return (
@@ -21,18 +20,21 @@ export default function Home() {
 
       <main className="products-page">
         <div className="container">
-          <div className="phones-grid" >
-            {latestPhones.length > 0 ? (
-              latestPhones.map((phone) => {
-                return <HomeProductCard key={phone._id} {...phone} />
-              })) : <NoPhoneMsg />}
-
-
+          <div className="phones-grid">
+            {loading && latestPhones.length === 0 ? (
+              <Loading/>
+            ) : error ? (
+              <ErrorDisplay error={error} />
+            ) : latestPhones.length > 0 ? (
+              latestPhones.map((phone) => (
+                <HomeProductCard key={phone._id} {...phone} />
+              ))
+            ) : (
+              <NoPhoneMsg />
+            )}
           </div>
         </div>
       </main>
-
     </>
-
-  )
+  );
 }
