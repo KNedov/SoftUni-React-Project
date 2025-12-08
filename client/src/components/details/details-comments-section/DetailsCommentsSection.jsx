@@ -9,7 +9,7 @@ import CommentCard from './comment-card/CommentCard';
 
 export default function DetailsCommentsSection({ comments, isAuthenticated, isOwner }) {
     const { user } = useUserContext();
-    const currentUserId = user._id;
+    const currentUserId = user?._id;
     const { request } = useRequest();
     const { productId: phoneId } = useParams();
     const [isPending, startOptimisticTransition] = useTransition();
