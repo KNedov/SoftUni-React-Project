@@ -15,7 +15,8 @@ import Details from './components/details/Details'
 import Logout from './components/logout/Logout'
 import { UserProvider } from './contexts/UserContext'
 import Edit from './components/edit/Edit'
-import Delete from './components/delete/Delete'
+import AuthGuard from './guards/AuthGuard'
+import GuestGuard from './guards/GuestGuard'
 
 function App() {
     return (
@@ -23,19 +24,23 @@ function App() {
             <Header />
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path="/:productId/details" element={<Details />} />
                 <Route path="/products" element={<Products />}>
                     <Route index element={<Smartphones />} />
                     <Route path="smartphones" element={<Smartphones />} />
                     <Route path="tablets" element={<Tablets />} />
                 </Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
 
-                <Route path="/product/create" element={<CreateProduct />} />
-                <Route path="/my-products" element={<MyProducts />} />
-                <Route path="/:productId/details" element={<Details />} />
-                <Route path="/:productId/edit" element={<Edit />} />
-                <Route path="/logout" element={<Logout />} />
+                <Route element={<GuestGuard />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                </Route>
+                <Route element={<AuthGuard />}>
+                    <Route path="/product/create" element={<CreateProduct />} />
+                    <Route path="/my-products" element={<MyProducts />} />
+                    <Route path="/:productId/edit" element={<Edit />} />
+                    <Route path="/logout" element={<Logout />} />
+                </Route>
             </Routes>
             <Footer />
         </UserProvider>
