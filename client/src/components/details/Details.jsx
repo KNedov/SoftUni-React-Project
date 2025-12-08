@@ -9,15 +9,15 @@ import DetailsPhoneContent from './details-phone-content/DetailsPhoneContent';
 import useIsOwner from '../../hooks/useIsOwner';
 import Delete from '../delete/Delete';
 import { useState } from 'react';
+import Loading from '../loading/Loading';
 
 export default function Details() {
     const { isAuthenticated } = useUserContext();
     const navigate = useNavigate()
     const { productId } = useParams()
-    const { data: phone } = useRequest(`/phones/${productId}`, [])
+    const { data: phone,loading } = useRequest(`/phones/${productId}`, [])
     const isOwner = useIsOwner(phone.userId)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
     return (
 
         <>
@@ -52,7 +52,8 @@ export default function Details() {
                     </div>
 
                                 {isDeleteOpen&&<Delete/>}
-                    <DetailsPhoneContent {...phone} isAuthenticated={isAuthenticated} isOwner={isOwner} />
+                                {loading&& <Loading/>}
+                    {!loading && phone && Object.keys(phone).length > 0 &&<DetailsPhoneContent {...phone} isAuthenticated={isAuthenticated} isOwner={isOwner} />}
                 </div>
                 <DetailsCommentsSection comments={phone.comments} isAuthenticated={isAuthenticated} isOwner={isOwner} />
             </div>
