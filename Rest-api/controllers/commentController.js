@@ -146,7 +146,7 @@ function deleteComment(req, res, next) {
             return commentModel
                 .find({ phoneId })
                 .populate("userId", "username")
-                .sort({ createdAt: 1 });
+                .sort({ createdAt: -1 });
         })
         .then((updatedComments) => {
             updatedComments.sort(
