@@ -9,57 +9,36 @@ export default function CommentCard({
   isLiking,
   isDeleting
 }) {
-
-  const normalizedCurrentUserId = String(currentUserId);
-  const normalizedCommentUserId = comment.userId?._id ? String(comment.userId._id) : '';
-
-  const isOptimistic = comment.isOptimistic || comment._id?.startsWith('temp-');
-
-
-  const normalizedLikes = Array.isArray(comment.likes)
-    ? comment.likes.map(like => String(like))
-    : [];
-
-  const isLiked = normalizedLikes.includes(normalizedCurrentUserId);
-  const isOwner = normalizedCommentUserId === normalizedCurrentUserId;
-
-
+  const isLiked = comment.likes.some(like => like === currentUserId);
+  const isOwner = comment.userId?._id  === String(currentUserId);
   const isLoadingLike = isLiking[comment._id] || false;
   const isLoadingDelete = isDeleting[comment._id] || false;
 
   const handleLikeClick = () => {
-    if (!isOptimistic && !isLoadingLike) {
-      onLike(comment._id);
-    }
+  onLike(comment._id);
   };
 
   const handleDeleteClick = () => {
-    if (!isOptimistic && !isLoadingDelete) {
-
       onDelete(comment._id);
-
-    }
   };
-
-
 
   const likeCount = Array.isArray(comment.likes) ? comment.likes.length : 0;
   const displayLikeCount = isLoadingLike ? '...' : likeCount;
 
   return (
-    <div className={`comment-card ${isOptimistic ? 'comment-pending' : ''}`}>
+    <div className={`comment-card ${comment ? 'comment-pending' : ''}`}>
       <div className="comment-header">
         <div className="user-info">
           <i className="icons fas fa-user-circle"></i>
           <span className="username">
             {comment.userId?.username || 'User'}
-            {isOptimistic && ' (Posting...)'}
+            
           </span>
           <span className="comment-date">{comment.created_at}</span>
         </div>
 
         <div className="comment-actions">
-          {isAuthenticated && !isOptimistic ? (
+          {isAuthenticated && comment ? (
             !isOwner ? (
               !isLiked ? (
                 <button

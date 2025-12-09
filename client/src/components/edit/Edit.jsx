@@ -13,7 +13,7 @@ export default function Edit() {
         const data = values;
         try {
             await request(`/phones/${phoneId}`, 'PUT', data);
-            navigate('/')
+            navigate(`/${phoneId}/details`)
 
         } catch (err) {
             alert(err.message)

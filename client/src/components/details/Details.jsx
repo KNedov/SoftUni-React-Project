@@ -15,9 +15,14 @@ export default function Details() {
     const { isAuthenticated } = useUserContext();
     const navigate = useNavigate()
     const { productId } = useParams()
-    const { data: phone,loading } = useRequest(`/phones/${productId}`, [])
+    const { data: phone,loading } = useRequest(`/phones/${productId}`,[] )
+
+    
+    
     const isOwner = useIsOwner(phone.userId)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+   
+    
     return (
 
         <>
@@ -52,10 +57,13 @@ export default function Details() {
                     </div>
 
                                 {isDeleteOpen&&<Delete/>}
-                                {loading&& <Loading/>}
+                                {loading&& <Loading text="Phone"/>}
+
                     {!loading && phone && Object.keys(phone).length > 0 &&<DetailsPhoneContent {...phone} isAuthenticated={isAuthenticated} isOwner={isOwner} />}
                 </div>
-                <DetailsCommentsSection comments={phone.comments} isAuthenticated={isAuthenticated} isOwner={isOwner} />
+                 {loading&& <Loading text='Comments'/>}
+                {!loading && phone && 
+                    <DetailsCommentsSection comments={phone.comments} isAuthenticated={isAuthenticated} isOwner={isOwner} />}
             </div>
 
 

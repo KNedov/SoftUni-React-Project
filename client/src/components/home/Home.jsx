@@ -22,7 +22,7 @@ export default function Home() {
         <div className="container">
           <div className="phones-grid">
             {loading && latestPhones.length === 0 ? (
-              <Loading/>
+              <Loading text='Phones'/>
             ) : error ? (
               <ErrorDisplay error={error} />
             ) : latestPhones.length > 0 ? (
