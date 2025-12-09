@@ -167,7 +167,7 @@ function like(req, res, next) {
             { $addToSet: { likes: userId } },
             { new: true }
         )
-        .populate("likes", "username _id")
+        
         .populate("userId", "username _id")
         .then((updatedComment) => {
             if (!updatedComment) {
