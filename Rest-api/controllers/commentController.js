@@ -24,7 +24,6 @@ function newComment(text, userId, phoneId) {
                     return commentModel
                         .find({ phoneId })
                         .populate("userId", "username")
-                        .populate("likes", "_id")
                         .sort({ createdAt: -1 });
                 });
             });
