@@ -44,6 +44,7 @@ export default function useForm(initialValues, validateFn, onSubmit) {
         values,
         errors,
         touched,
+        setValues,
         register,
         submitHandler,
     }

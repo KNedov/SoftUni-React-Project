@@ -1,62 +1,72 @@
 import './CreateProduct.css'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import useForm from "../../hooks/useForm";
 import useRequest from '../../hooks/useRequest'
+import { validateCreate } from '../../validators/validateCreate';
+import { useState } from 'react';
+
 
 
 export default function CreateProduct() {
   const { request } = useRequest()
   const navigate = useNavigate()
+  const [IsPending,setIsPending]=useState(false)
 
-  const createProductHandler = async (values) => {
+  const submit = async (values) => {
     const data = values;
     try {
+      setIsPending(true)
       await request('/phones/create', 'POST', data);
       navigate('/my-products')
 
     } catch (err) {
       alert(err.message)
+    }finally{
+      setIsPending(false)
     }
   }
 
-  const { register, handleSubmit, formState } = useForm({
-    defaultValues: {
-      phoneName: '',
-      displaySize: '',
-      color: '',
-      cpu: '',
-      ram: '',
-      storage: '',
-      price: '',
-      image: ''
-    },
-    mode: 'onBlur',
-    reValidateMode: 'onChange'
-  })
+  const { values, errors, touched, register, submitHandler } = useForm({
 
-  const inputClass = (field) => formState.errors[field] ? 'input input-error' : 'input';
-  const errorText = (field) => formState.errors[field] && <p className="error-text">{formState.errors[field].message}</p>;
+    phoneName: '',
+    displaySize: '',
+    color: '',
+    cpu: '',
+    ram: '',
+    storage: '',
+    price: '',
+    image: ''
+
+  }, validateCreate,
+    submit
+
+  )
+
+  const inputClass = (field) => {
+    const hasError = errors[field] && touched[field];
+    return `input ${hasError ? 'input-error' : ''}`;
+  };
+
+  const errorText = (field) =>
+    errors[field] && touched[field] && (
+      <p className="error-text">{errors[field]}</p>
+    );
 
   return (
     <div className="create-phone-container">
       <h1 className="create-title">Add New Phone</h1>
 
-      <form className="phone-form" onSubmit={handleSubmit(createProductHandler)} >
+      <form className="phone-form" onSubmit={submitHandler} >
         <div className="form-group">
           <label htmlFor="phoneName">Phone Name</label>
           <input
             type="text"
             id="phoneName"
-            {...register('phoneName', {
-              required: 'Phone Name is Required !',
-              minLength: {
-                value: 3,
-                message: 'Phone name must be min 3 characters'
-              }
-            })}
-            required
-            placeholder="e.g. iPhone 15 Pro"
+            {...register('phoneName')}
             className={inputClass('phoneName')}
+            placeholder="e.g. iPhone 15 Pro"
+            required
+
           />
 
           {errorText('phoneName')}
@@ -68,12 +78,11 @@ export default function CreateProduct() {
             <input
               type="text"
               id="displaySize"
-              {...register('displaySize', {
-                required: 'Display Size is Required !'
-              })}
-              required
-              placeholder="e.g. 6.7 "
+              {...register('displaySize')}
               className={inputClass('displaySize')}
+              placeholder="e.g. 6.7 "
+              required
+
             />
             {errorText('displaySize')}
           </div>
@@ -83,12 +92,11 @@ export default function CreateProduct() {
             <input
               type="text"
               id="color"
-              {...register('color', {
-                required: 'Color is Required !'
-              })}
-              required
-              placeholder="e.g. Space Black"
+              {...register('color')}
               className={inputClass('color')}
+              placeholder="e.g. Space Black"
+              required
+
             />
             {errorText('color')}
           </div>
@@ -100,12 +108,11 @@ export default function CreateProduct() {
             <input
               type="text"
               id="cpu"
-              {...register('cpu', {
-                required: 'CPU is Required !'
-              })}
+              {...register('cpu')}
+              className={inputClass('cpu')}
               required
               placeholder="e.g. A17 Pro"
-              className={inputClass('cpu')}
+
             />
             {errorText('cpu')}
           </div>
@@ -115,12 +122,11 @@ export default function CreateProduct() {
             <input
               type="text"
               id="ram"
-              {...register('ram', {
-                required: 'Ram is Required !'
-              })}
-              required
-              placeholder="e.g. 8GB"
+              {...register('ram')}
               className={inputClass('ram')}
+              placeholder="e.g. 8GB"
+              required
+
             />
             {errorText('ram')}
           </div>
@@ -132,12 +138,11 @@ export default function CreateProduct() {
             <input
               type="text"
               id="storage"
-              {...register('storage', {
-                required: 'Storage is Required !'
-              })}
-              required
-              placeholder="e.g. 256GB"
+              {...register('storage')}
               className={inputClass('storage')}
+              placeholder="e.g. 256GB"
+              required
+
             />
             {errorText('storage')}
           </div>
@@ -147,13 +152,11 @@ export default function CreateProduct() {
             <input
               type="number"
               id="price"
-              {...register('price', {
-                required: 'Price is Required !',
-                valueAsNumber: true
-              })}
-              required
-              placeholder="e.g. 999"
+              {...register('price')}
               className={inputClass('price')}
+              placeholder="e.g. 999"
+              required
+
             />
             {errorText('price')}
           </div>
@@ -164,21 +167,18 @@ export default function CreateProduct() {
           <input
             type="url"
             id="imageUrl"
-            {...register('image', {
-              required: 'Image is Required !',
-
-            })}
-            required
-            placeholder="https://example.com/image.jpg"
+            {...register('image')}
             className={inputClass('image')}
+            placeholder="https://example.com/image.jpg"
+            required
           />
           {errorText('image')}
 
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-btn">
-            Add Phone
+          <button disabled={IsPending} type="submit" className="submit-btn">
+            Add Phone{IsPending&&'...'}
           </button>
           <button type="button" onClick={() => navigate(-1)} className="cancel-btn">
             Cancel
