@@ -8,10 +8,7 @@ import { validateRegister } from '../../validators/validateRegister'
 export default function Register() {
     const navigate = useNavigate()
     const { registerHandler } = useContext(UserContext)
-    const[errMsg,setErrMsg]=useState()
     const [pending,setPending]=useState(false)
- 
-
     const submit = async (values) => {
     if (Object.keys(errors).length > 0) {
         return;
@@ -19,7 +16,8 @@ export default function Register() {
 
     try {
         setPending(true);
-
+        
+        
         await registerHandler(
             values.email,
             values.password,
@@ -29,7 +27,7 @@ export default function Register() {
 
         navigate('/');
     } catch (err) {
-        setErrMsg(err.message);
+      
     } finally {
         setPending(false); 
     }
@@ -97,7 +95,7 @@ const errorText = (field) =>
                         {errorText('rePassword')}
                     </div>
                     <button type="submit" disabled={pending} className="register-btn">{pending ? "Loading..." : "Register"}</button>
-                    {errMsg&&<p className='error-text'>{errMsg}</p>}
+                    
                 </form>
 
                 <div className="login-link">

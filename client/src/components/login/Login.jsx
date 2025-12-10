@@ -7,7 +7,7 @@ import UserContext from "../../contexts/UserContext";
 import { validateLogin } from '../../validators/validateLogin';
 
 export default function Login() {
-        const { loginHandler } = useContext(UserContext);
+    const { loginHandler } = useContext(UserContext);
     const navigate = useNavigate();
     const [errMsg, setErrMsg] = useState("")
     const [pending, setPending] = useState(false)
@@ -19,8 +19,10 @@ export default function Login() {
             setPending(false);
             navigate("/");
         } catch (err) {
-            setPending(false);
-            setErrMsg(err.message);
+          
+
+        }finally{
+            setPending(false)
         }
     }
 
@@ -43,7 +45,7 @@ export default function Login() {
     } = useForm(
         { email: "", password: "" },
         validateLogin,
-        submit            
+        submit
     );
 
     return (
@@ -63,12 +65,12 @@ export default function Login() {
                         <input type="password" id="password" {...register('password')} className={inputClass('password')} required placeholder="Enter your password" />
                         {errorText('password')}
                     </div>
-                   
-                    <button type="submit" disabled={pending}  className="login-btn">{pending ? "Loading..." : "Login"}</button>
-                    
-                    
-                    
-                    {errMsg && <p className='error-text'>{errMsg}</p>}
+
+                    <button type="submit" disabled={pending} className="login-btn">{pending ? "Loading..." : "Login"}</button>
+
+
+
+
 
                 </form>
 

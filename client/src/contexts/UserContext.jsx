@@ -22,31 +22,59 @@ export function UserProvider({
     children,
 
 }) {
-    const [user, setUser] = usePersistedState(null,'auth');
+    const [user, setUser] = usePersistedState(null, 'auth');
+    const [cart, setCart] = usePersistedState([], 'cart');
     const { request } = useRequest();
-
-    const registerHandler = async (email,password,username,tel) => {
-        const newUser = {email,password,username,tel}
-
+  
+    const registerHandler = async (email, password, username, tel) => {
+    try {
+        const newUser = { email, password, username, tel };
         const result = await request('/register', 'POST', newUser);
+        if (!result || result.error) {
+               
 
+                throw new Error(result?.error);
+            }
         setUser(result);
-
+        return result;
+    } catch (err) {
+        console.error('Registration failed:', err.message);
+        
+        throw err;
     }
+};
 
     const loginHandler = async (email, password) => {
-        const result = await request('/login', 'POST', { email, password });
+        try {
+            const result = await request('/login', 'POST', { email, password });
 
-        setUser(result)
-    }
+            if (!result || result.error) {
+               
+
+                throw new Error(result?.error);
+            }
+
+            setUser(result);
+            return result;
+        } catch (err) {
+            console.error("Login error:", err);
+            throw err;
+        }
+    };
 
     const logoutHandler = () => {
         return request('/logout', 'POST', null)
-            .finally(() => setUser(null));
+            .finally(() => {
+                setUser(null);
+                setCart([]);
+            });
     };
 
     const userContextValues = {
-        user, isAuthenticated: !!user?._id,
+        user,
+        cart,
+        setCart,
+        isAuthenticated: !!user?._id,
         registerHandler,
         loginHandler,
         logoutHandler,
