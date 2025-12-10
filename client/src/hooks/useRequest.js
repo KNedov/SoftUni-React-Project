@@ -31,8 +31,22 @@ export default function useRequest(url, initialState) {
             }
 
             const response = await fetch(`${baseUrl}${url}`, options);
+            const contentType = response.headers.get("content-type");
+                console.log(contentType);
+                
+            let result;
 
             if (response.status === 404) {
+                if (contentType && contentType.trim().toLowerCase().includes("application/json")) {
+                   console.log('in');
+                   
+                    result = await response.json();
+                    throw new Error(result.message);
+                    
+                } else {
+                    
+                    result = { message: await response.text() };
+                }
                 throw new Error(`Server Error: ${response.status} Not Found`);
             }
 
