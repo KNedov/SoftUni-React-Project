@@ -4,10 +4,10 @@ import { useUserContext } from '../../contexts/UserContext'
 import { useEffect, useState } from 'react';
 import CartModal from '../cart-modal/CartModal';
 export default function Header() {
-    const { cart, setCart } = useUserContext()
+    const { cart, setCart,logoutHandler,user } = useUserContext()
     const [open, setOpen] = useState(false);
     const navigate = useNavigate()
-    const { logoutHandler } = useUserContext()
+
     const [pendingLogout,usePendingLogout]=useState(false)
 
     useEffect(() => {
@@ -59,6 +59,7 @@ export default function Header() {
                     </NavLink>
                 </div>
                 <div className="header-actions">
+                    {user&& <p>{user?.email}</p>}
                     {!isAuthenticated ?
                         <div className="auth-buttons" id="guest-actions">
 
