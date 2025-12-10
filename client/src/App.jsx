@@ -17,10 +17,12 @@ import { UserProvider } from './contexts/UserContext'
 import Edit from './components/edit/Edit'
 import AuthGuard from './guards/AuthGuard'
 import GuestGuard from './guards/GuestGuard'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
     return (
-        <UserProvider>
+        <>
+            <ToastContainer/>
             <Header />
             <Routes>
                 <Route path='/' element={<Home />} />
@@ -43,7 +45,7 @@ function App() {
                 </Route>
             </Routes>
             <Footer />
-        </UserProvider>
+        </>
     )
 }
 

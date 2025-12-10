@@ -1,7 +1,50 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, } from 'react-router-dom';
 import './Header.css'
 import { useUserContext } from '../../contexts/UserContext'
+import { useEffect, useState } from 'react';
+import CartModal from '../cart-modal/CartModal';
 export default function Header() {
+    const { cart, setCart } = useUserContext()
+    const [open, setOpen] = useState(false);
+    const navigate = useNavigate()
+    const { logoutHandler } = useUserContext()
+    const [pendingLogout,usePendingLogout]=useState(false)
+
+    useEffect(() => {
+    }, [cart]);
+
+    const toggleCart = () => setOpen(o => !o);
+    const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+    const updateCartItemQuantity = (id, op) => {
+        setCart(prevCart => {
+            return prevCart.map(item => {
+                if (item._id !== id) return item;
+
+                const currentQty = item.quantity || 1;
+                const newQty = op === '+' ? currentQty + 1 : Math.max(currentQty - 1, 1);
+
+                return { ...item, quantity: newQty };
+            });
+        });
+    };
+
+    const handleRemove = (id) => {
+        setCart(prevCart => prevCart.filter(item => item._id !== id));
+    }
+    const handleLogout = async () => {
+        try {
+            usePendingLogout(true)
+            await logoutHandler();
+            navigate('/');
+        } catch (err) {
+            alert('Logout Problem!');
+            navigate('/');
+        }finally{
+            usePendingLogout(false)
+        }
+    };
+
 
     const { isAuthenticated } = useUserContext()
     return (
@@ -18,6 +61,7 @@ export default function Header() {
                 <div className="header-actions">
                     {!isAuthenticated ?
                         <div className="auth-buttons" id="guest-actions">
+
                             <NavLink to="/login" className="btn btn-login">
                                 <i className="fas fa-sign-in-alt" />
                                 Login
@@ -29,14 +73,15 @@ export default function Header() {
                         </div>
                         :
                         <div className="user-menu" id="user-actions">
-                            <Link to="/cart" className="btn btn-cart">
+                            <button onClick={toggleCart} className="btn btn-cart">
                                 <i className="fas fa-shopping-cart" />
-                                <span className="cart-count">0</span>
-                            </Link>
-                            <Link to="/logout" className="btn btn-logout">
+                                <span className="cart-count">{totalQuantity}</span>
+                            </button>
+
+                            <button disabled={pendingLogout} onClick={handleLogout} className="btn btn-logout">
                                 <i className="fas fa-sign-out-alt" />
-                                Logout
-                            </Link>
+                                Logout {pendingLogout?'...':''}
+                            </button>
                         </div>
                     }
 
@@ -76,6 +121,14 @@ export default function Header() {
                     </ul>
                 </div>
             </nav>
+            <CartModal
+
+                isOpen={open}
+                onIncrease={updateCartItemQuantity}
+                onDecrease={updateCartItemQuantity}
+                onRemove={handleRemove}
+                onToggle={toggleCart}
+            />
         </header>
     );
 }

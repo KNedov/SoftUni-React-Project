@@ -10,9 +10,12 @@ export default function DetailsPhoneContent({
     price,
     phoneName,
     isAuthenticated,
-    isOwner
+    isOwner,
+    onBuy
 }) {
-
+    const handleBuyClick=()=>{
+        onBuy()
+    }
 
     return (
         <div className="phone-content">
@@ -57,9 +60,9 @@ export default function DetailsPhoneContent({
 
                 {isAuthenticated &&!isOwner
                     && <div>
-                        <button className="btn btn-buy disabled-buy">
+                        <button onClick={handleBuyClick} className="btn btn-buy buy">
                             Buy
-                            <span className="coming-soon">Coming Soon</span>
+                           
                         </button>
                     </div>
                 }

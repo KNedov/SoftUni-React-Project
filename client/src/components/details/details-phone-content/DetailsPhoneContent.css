@@ -67,13 +67,13 @@
   font-weight: bold;
   border: none;
   border-radius: 6px;
-  cursor: not-allowed;
+  cursor: pointer;
   transition: background 0.3s ease;
   width: auto;
 }
 
-.btn-buy.disabled-buy {
-  background: #95a5a6;
+.btn-buy:hover{
+  background-color: #218838;
 }
 
 .coming-soon {

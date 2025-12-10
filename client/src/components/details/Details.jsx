@@ -11,17 +11,36 @@ import Delete from '../delete/Delete';
 import { useState } from 'react';
 import Loading from '../loading/Loading';
 
+
 export default function Details() {
-    const { isAuthenticated } = useUserContext();
+    const { isAuthenticated,user,setCart} = useUserContext();
     const navigate = useNavigate()
     const { productId } = useParams()
     const { data: phone,loading } = useRequest(`/phones/${productId}`,[] )
+    
 
     
     
     const isOwner = useIsOwner(phone.userId)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-   
+
+   const handleBuy = () => {
+    setCart(prevCart => {
+        const cart = prevCart || [];
+
+        const existingItem = cart.find(item => item._id === phone._id);
+
+        if (existingItem) {
+            return cart.map(item =>
+                item._id === phone._id
+                    ? { ...item, quantity: (item.quantity || 1) + 1}
+                    : item
+            );
+        }
+
+        return [...cart, { ...phone, quantity: 1 }];
+    });
+};
     
     return (
 
@@ -59,7 +78,7 @@ export default function Details() {
                                 {isDeleteOpen&&<Delete/>}
                                 {loading&& <Loading text="Phone"/>}
 
-                    {!loading && phone && Object.keys(phone).length > 0 &&<DetailsPhoneContent {...phone} isAuthenticated={isAuthenticated} isOwner={isOwner} />}
+                    {!loading && phone && Object.keys(phone).length > 0 &&<DetailsPhoneContent {...phone} isAuthenticated={isAuthenticated} isOwner={isOwner} onBuy={handleBuy} />}
                 </div>
                  {loading&& <Loading text='Comments'/>}
                 {!loading && phone && 
