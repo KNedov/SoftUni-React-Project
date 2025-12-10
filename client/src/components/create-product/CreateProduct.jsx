@@ -12,7 +12,7 @@ export default function CreateProduct() {
     const data = values;
     try {
       await request('/phones/create', 'POST', data);
-      navigate('/')
+      navigate('/my-products')
 
     } catch (err) {
       alert(err.message)
