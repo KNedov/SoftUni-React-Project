@@ -10,18 +10,21 @@ import { useState } from 'react';
 export default function CreateProduct() {
   const { request } = useRequest()
   const navigate = useNavigate()
-  const [IsPending,setIsPending]=useState(false)
+  const [IsPending, setIsPending] = useState(false)
 
   const submit = async (values) => {
     const data = values;
     try {
       setIsPending(true)
-      await request('/phones/create', 'POST', data);
-      navigate('/my-products')
+      const result = await request('/phones/create', 'POST', data);
+      if (!result || result.error) {
+        throw new Error(result?.error);
+      }
+        navigate('/my-products')
 
     } catch (err) {
-      alert(err.message)
-    }finally{
+     
+    } finally {
       setIsPending(false)
     }
   }
@@ -178,7 +181,7 @@ export default function CreateProduct() {
 
         <div className="form-actions">
           <button disabled={IsPending} type="submit" className="submit-btn">
-            Add Phone{IsPending&&'...'}
+            Add Phone{IsPending && '...'}
           </button>
           <button type="button" onClick={() => navigate(-1)} className="cancel-btn">
             Cancel

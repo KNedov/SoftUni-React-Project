@@ -9,19 +9,22 @@ export default function Edit() {
     const navigate = useNavigate();
     const { productId: phoneId } = useParams();
     const { request } = useRequest();
-    const [IsPending, setIsPending] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
 
     const submit = async (values) => {
         const data = values;
         try {
-            setIsPending(true)
-            await request(`/phones/${phoneId}`, 'PUT', data);
+            setIsEditing(true)
+           const result= await request(`/phones/${phoneId}`, 'PUT', data);
+            if (!result || result.error) {
+                throw new Error(result?.error);
+            }
             navigate(`/${phoneId}/details`)
 
         } catch (err) {
-            alert(err.message)
+
         } finally {
-            setIsPending(false)
+            setIsEditing(false)
         }
 
     }
@@ -193,8 +196,8 @@ export default function Edit() {
                 </div>
 
                 <div className="form-actions">
-                    <button disabled={IsPending} type="submit" className="submit-btn">
-                        Edit{IsPending&&'...'}
+                    <button disabled={isEditing} type="submit" className="submit-btn">
+                        Edit{isEditing && '...'}
                     </button>
                     <button type="button" onClick={() => navigate(-1)} className="cancel-btn">
                         Cancel
