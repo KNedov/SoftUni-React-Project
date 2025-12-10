@@ -18,6 +18,7 @@ import AuthGuard from './guards/AuthGuard'
 import GuestGuard from './guards/GuestGuard'
 import { ToastContainer } from 'react-toastify'
 import About from './components/about/About'
+import NotFound from './components/not-fount/NotFound'
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="*" element={<NotFound />} />
                 <Route path="/:productId/details" element={<Details />} />
                 <Route path="/products" element={<Products />}>
                     <Route index element={<Smartphones />} />
