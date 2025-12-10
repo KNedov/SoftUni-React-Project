@@ -9,7 +9,6 @@ import { validateLogin } from '../../validators/validateLogin';
 export default function Login() {
     const { loginHandler } = useContext(UserContext);
     const navigate = useNavigate();
-    const [errMsg, setErrMsg] = useState("")
     const [pending, setPending] = useState(false)
 
     const submit = async ({ email, password }) => {

@@ -17,13 +17,13 @@ export default function ProductCard(
 
   return (
     <div className="product-card">
-      {/* <div className="phone-image"> */}
+     
         <img
           src={image}
           alt="PhoneName"
           className="phone-image"
         />
-      {/* </div> */}
+      
       <div className="product-info">
         <h3>{phoneName}</h3>
         <div className="price-container">
