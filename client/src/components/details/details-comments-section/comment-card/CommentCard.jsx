@@ -14,6 +14,14 @@ export default function CommentCard({
   const isLoadingLike = isLiking[comment._id] || false;
   const isLoadingDelete = isDeleting[comment._id] || false;
 
+  const formattedDate = new Date(comment?.created_at).toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+});
+
   const handleLikeClick = () => {
   onLike(comment._id);
   };
@@ -34,7 +42,7 @@ export default function CommentCard({
             {comment.userId?.username || 'User'}
             
           </span>
-          <span className="comment-date">{comment.created_at}</span>
+          <span className="comment-date">{formattedDate}</span>
         </div>
 
         <div className="comment-actions">
