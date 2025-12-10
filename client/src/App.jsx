@@ -17,14 +17,16 @@ import Edit from './components/edit/Edit'
 import AuthGuard from './guards/AuthGuard'
 import GuestGuard from './guards/GuestGuard'
 import { ToastContainer } from 'react-toastify'
+import About from './components/about/About'
 
 function App() {
     return (
         <>
-            <ToastContainer/>
+            <ToastContainer />
             <Header />
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/:productId/details" element={<Details />} />
                 <Route path="/products" element={<Products />}>
                     <Route index element={<Smartphones />} />
@@ -42,6 +44,7 @@ function App() {
                     <Route path="/:productId/edit" element={<Edit />} />
                     <Route path="/logout" element={<Logout />} />
                 </Route>
+
             </Routes>
             <Footer />
         </>

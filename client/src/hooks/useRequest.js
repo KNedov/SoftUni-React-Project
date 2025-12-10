@@ -11,12 +11,11 @@ export default function useRequest(url, initialState) {
     const request = async (url, method, data, config = {}, signal) => {
         setLoading(true);
         setError(null);
-        
         try {
             let options = {
                 credentials: "include",
                 signal,
-                ...config
+                ...config,
             };
 
             if (method) {
@@ -26,7 +25,7 @@ export default function useRequest(url, initialState) {
             if (data) {
                 options.headers = {
                     "Content-Type": "application/json",
-                    ...options.headers
+                    ...options.headers,
                 };
                 options.body = JSON.stringify(data);
             }
@@ -40,7 +39,9 @@ export default function useRequest(url, initialState) {
             if (!response.ok) {
                 const errorResult = await response.json();
                 if (errorResult.message) throw new Error(errorResult.message);
-                throw new Error(errorResult.message || `Server Error: ${errorResult.status}`);
+                throw new Error(
+                    errorResult.message || `Server Error: ${errorResult.status}`
+                );
             }
 
             if (response.status === 204) {
@@ -63,13 +64,19 @@ export default function useRequest(url, initialState) {
     useEffect(() => {
         if (!url) return;
 
-        const controller = new AbortController(); 
+        const controller = new AbortController();
         const fetchData = async () => {
             setLoading(true);
             setError(null);
-            
+
             try {
-                const result = await request(url, null, null, {}, controller.signal);
+                const result = await request(
+                    url,
+                    null,
+                    null,
+                    {},
+                    controller.signal
+                );
                 setData(result);
             } catch (err) {
                 console.error(err);
@@ -79,7 +86,7 @@ export default function useRequest(url, initialState) {
 
         fetchData();
 
-        return () => controller.abort(); 
+        return () => controller.abort();
     }, [url]);
 
     return {
@@ -87,6 +94,6 @@ export default function useRequest(url, initialState) {
         data,
         setData,
         loading,
-        error
+        error,
     };
 }

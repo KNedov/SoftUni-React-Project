@@ -107,13 +107,19 @@ export default function Header() {
                                 <li>
                                     <NavLink to="product/create" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
                                         <i className="fas fa-plus-circle" />
-                                        CreateProduct
+                                        Create Product
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink to="/my-products" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
                                         <i className="fas fa-list" />
-                                        MyProducts
+                                        My Products
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/about" className={({ isActive }) => `${isActive ? 'active' : ''}`} >
+                                        <i className="fas fa-info-circle"></i>
+                                        About
                                     </NavLink>
                                 </li>
                             </>
