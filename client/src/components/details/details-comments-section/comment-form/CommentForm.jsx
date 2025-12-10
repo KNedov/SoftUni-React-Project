@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './CommentForm.css'
+import useForm from '../../../../hooks/useForm';
+import { validateComment } from '../../../../validators/validateComment';
 
 export default function CommentForm({ 
   onSubmit, 
@@ -7,22 +9,36 @@ export default function CommentForm({
   isOwner,
   isAuthenticated 
 }) {
-  const [newComment, setNewComment] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const commentText = newComment.trim();
+
+  const handleSubmit = async (value) => {
+   
+    const commentText = value
     
     if (!commentText || isCreating) return;
     
     try {
       await onSubmit(commentText);
-      setNewComment(""); 
+      setValues({ commentText: '' });
     } catch (err) {
       console.error('Failed to submit comment:', err);
       
     }
   };
+
+
+
+    const errorText = (field) =>
+        errors[field] && touched[field] && (
+            <p className="error-text">{errors[field]}</p>
+        );
+
+  const { values,
+        errors,
+        touched,
+        setValues,
+        register,
+        submitHandler,}=useForm({commentText:''},validateComment,handleSubmit)
 
   if (!isAuthenticated) {
     return (
@@ -43,24 +59,25 @@ export default function CommentForm({
   }
 
   return (
-    <form className="new-comment" onSubmit={handleSubmit}>
+    <form className="new-comment" onSubmit={submitHandler}>
       <textarea
         required
         className="comment-field"
         placeholder="Write your thoughts about this phone..."
-        minLength={3}
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
+     
+        {...register('commentText')}
         disabled={isCreating}
       />
+     
       <button 
         className="submit-btn" 
         type="submit"
-        disabled={isCreating || !newComment.trim()}
+        disabled={isCreating }
       >
         <i className="fas fa-share-square"></i> 
         {isCreating ? 'Posting...' : 'Post Comment'}
       </button>
+       {errorText('commentText')}
     </form>
   );
 }

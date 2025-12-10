@@ -1,26 +1,25 @@
 import { useState } from "react";
 
 export default function useForm(initialValues, validateFn, onSubmit) {
-
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
 
     const changeHandler = (e) => {
-        setValues(state => ({
+        setValues((state) => ({
             ...state,
-            [e.target.name]: e.target.value
-        }))
-    }
+            [e.target.name]: e.target.value,
+        }));
+    };
 
     const blurHandler = (e) => {
-        setTouched(state => ({ 
-            ...state, 
-            [e.target.name]: true 
+        setTouched((state) => ({
+            ...state,
+            [e.target.name]: true,
         }));
 
         setErrors(validateFn(values));
-    }
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -31,13 +30,13 @@ export default function useForm(initialValues, validateFn, onSubmit) {
         if (Object.keys(validation).length > 0) return;
 
         onSubmit(values);
-    }
+    };
 
     const register = (field) => ({
         name: field,
         value: values[field],
         onChange: changeHandler,
-        onBlur: blurHandler
+        onBlur: blurHandler,
     });
 
     return {
@@ -47,5 +46,5 @@ export default function useForm(initialValues, validateFn, onSubmit) {
         setValues,
         register,
         submitHandler,
-    }
+    };
 }

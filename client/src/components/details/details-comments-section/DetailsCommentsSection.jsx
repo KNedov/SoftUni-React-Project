@@ -19,13 +19,11 @@ export default function DetailsCommentsSection({ comments: firstComments, isAuth
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleCreateComment = async (commentText) => {
-        if (!commentText?.trim() || isCreating) return;
+        if (!commentText || isCreating) return;
 
         try {
             setIsCreating(true);
-
-            const created = await request(`/phones/${phoneId}/comments`, "POST", { commentText });
-
+            const created = await request(`/phones/${phoneId}/comments`, "POST", commentText);
             const newComment = created
                 .slice()
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
@@ -33,7 +31,6 @@ export default function DetailsCommentsSection({ comments: firstComments, isAuth
             setComments(prev => [...prev, newComment]);
 
         } catch (err) {
-            alert(err.message);
         } finally {
             setIsCreating(false);
         }
@@ -73,7 +70,7 @@ export default function DetailsCommentsSection({ comments: firstComments, isAuth
 
         try {
             setIsDeleting(prev => ({ ...prev, [commentId]: true }));
-        
+
             const newComments = await request(`/phones/${phoneId}/comments/${commentId}`, 'DELETE');
 
             newComments.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
