@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const baseUrl = "https://softuni-react-project-336p.onrender.com/api";
 
@@ -53,7 +54,7 @@ export default function useRequest(url, initialState) {
             return await response.json();
         } catch (error) {
             setError(error.message);
-            throw error;
+            toast.error(error.message)
         } finally {
             setLoading(false);
         }
