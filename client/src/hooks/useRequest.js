@@ -8,13 +8,14 @@ export default function useRequest(url, initialState) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const request = async (url, method, data, config = {}) => {
+    const request = async (url, method, data, config = {}, signal) => {
         setLoading(true);
         setError(null);
         
         try {
             let options = {
                 credentials: "include",
+                signal,
                 ...config
             };
 
@@ -31,20 +32,15 @@ export default function useRequest(url, initialState) {
             }
 
             const response = await fetch(`${baseUrl}${url}`, options);
-            if (response.status===404) {
-                throw new Error( `Server Error: ${response.status} Not Found` );
+
+            if (response.status === 404) {
+                throw new Error(`Server Error: ${response.status} Not Found`);
             }
 
             if (!response.ok) {
-               
-                const errorResult = await response?.json()
-              
-                if (errorResult.message) {
-                    throw new Error(errorResult.message) 
-                    
-                }
-                
-                throw new Error(errorResult.message|| `Server Error: ${errorResult.status}` );
+                const errorResult = await response.json();
+                if (errorResult.message) throw new Error(errorResult.message);
+                throw new Error(errorResult.message || `Server Error: ${errorResult.status}`);
             }
 
             if (response.status === 204) {
@@ -53,8 +49,12 @@ export default function useRequest(url, initialState) {
 
             return await response.json();
         } catch (error) {
-            setError(error.message);
-            toast.error(error.message)
+            if (error.name === "AbortError") {
+                console.log("Request aborted");
+            } else {
+                setError(error.message);
+                toast.error(error.message);
+            }
         } finally {
             setLoading(false);
         }
@@ -63,12 +63,13 @@ export default function useRequest(url, initialState) {
     useEffect(() => {
         if (!url) return;
 
+        const controller = new AbortController(); 
         const fetchData = async () => {
             setLoading(true);
             setError(null);
             
             try {
-                const result = await request(url);
+                const result = await request(url, null, null, {}, controller.signal);
                 setData(result);
             } catch (err) {
                 console.error(err);
@@ -77,6 +78,8 @@ export default function useRequest(url, initialState) {
         };
 
         fetchData();
+
+        return () => controller.abort(); 
     }, [url]);
 
     return {
